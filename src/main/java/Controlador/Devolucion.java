@@ -3,6 +3,9 @@ package Controlador;
 import DAO.DaoPrestamo;
 import Modelo.Prestamo;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -25,22 +28,26 @@ public class Devolucion extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String etiqueta = request.getParameter("etiqueta");
-        Long textoId;
-        String id = request.getParameter("id");
-        textoId = new Long(Long.parseLong(id));
-
-        DaoPrestamo daoPr = new DaoPrestamo();
-        Prestamo pr = daoPr.validarPrestamo(Integer.parseInt(etiqueta), textoId);
-        if (pr != null) {
-            daoPr.cambiarEstado(textoId, Integer.parseInt(etiqueta));
-            request.setAttribute("Devolucion", "OK");
-            RequestDispatcher rd = request.getRequestDispatcher("Devolucion.jsp");
-            rd.forward(request, response);
-        } else {
-            request.setAttribute("Devolucion", "NOK");
-            RequestDispatcher rd = request.getRequestDispatcher("Devolucion.jsp");
-            rd.forward(request, response);
+        try {
+            String etiqueta = request.getParameter("etiqueta");
+            Long textoId;
+            String id = request.getParameter("id");
+            textoId = new Long(Long.parseLong(id));
+            
+            DaoPrestamo daoPr = new DaoPrestamo();
+            Prestamo pr = daoPr.validarPrestamo(Integer.parseInt(etiqueta), textoId);
+            if (pr != null) {
+                daoPr.cambiarEstado(textoId, Integer.parseInt(etiqueta));
+                request.setAttribute("Devolucion", "OK");
+                RequestDispatcher rd = request.getRequestDispatcher("Devolucion.jsp");
+                rd.forward(request, response);
+            } else {
+                request.setAttribute("Devolucion", "NOK");
+                RequestDispatcher rd = request.getRequestDispatcher("Devolucion.jsp");
+                rd.forward(request, response);
+            }
+        } catch (URISyntaxException ex) {
+            Logger.getLogger(Devolucion.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }

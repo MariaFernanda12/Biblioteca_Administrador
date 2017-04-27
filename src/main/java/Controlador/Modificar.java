@@ -4,6 +4,9 @@ import DAO.DaoElementos;
 import Modelo.Elemento;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URISyntaxException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -27,21 +30,25 @@ public class Modificar extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String etiqueta = request.getParameter("etiqueta");
-        String cantidad = request.getParameter("cantidad");
-        String ubicacion = request.getParameter("ubicacion");
-        String estado = request.getParameter("estado");
-        DaoElementos daoElm = new DaoElementos();
-        boolean resultado
-                = daoElm.modificarElemento(Integer.parseInt(cantidad), estado, ubicacion, Integer.parseInt(etiqueta));
-        if (resultado == false) {
-            request.setAttribute("Modificar", "OK");
-        } else {
-            request.setAttribute("Modificar", "NOK");
+        try {
+            String etiqueta = request.getParameter("etiqueta");
+            String cantidad = request.getParameter("cantidad");
+            String ubicacion = request.getParameter("ubicacion");
+            String estado = request.getParameter("estado");
+            DaoElementos daoElm = new DaoElementos();
+            boolean resultado
+                    = daoElm.modificarElemento(Integer.parseInt(cantidad), estado, ubicacion, Integer.parseInt(etiqueta));
+            if (resultado == false) {
+                request.setAttribute("Modificar", "OK");
+            } else {
+                request.setAttribute("Modificar", "NOK");
+            }
+            //3. RequestDispacher
+            RequestDispatcher rd = request.getRequestDispatcher("Modificar.jsp");
+            rd.forward(request, response);
+        } catch (URISyntaxException ex) {
+            Logger.getLogger(Modificar.class.getName()).log(Level.SEVERE, null, ex);
         }
-        //3. RequestDispacher
-        RequestDispatcher rd = request.getRequestDispatcher("Modificar.jsp");
-        rd.forward(request, response);
 
     }
 

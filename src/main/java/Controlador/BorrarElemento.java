@@ -2,6 +2,9 @@ package Controlador;
 
 import DAO.DaoElementos;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -25,15 +28,19 @@ public class BorrarElemento extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        String parametro = request.getParameter("etiqueta");
-
-        DaoElementos daoE = new DaoElementos();
-
-        boolean resultado = daoE.borrarElemento(Integer.parseInt(parametro));
-        request.setAttribute("Borrar", resultado);
-        //3. RequestDispacher
-        RequestDispatcher rd = request.getRequestDispatcher("Borrar.jsp");
-        rd.forward(request, response);
+        try {
+            String parametro = request.getParameter("etiqueta");
+            
+            DaoElementos daoE = new DaoElementos();
+            
+            boolean resultado = daoE.borrarElemento(Integer.parseInt(parametro));
+            request.setAttribute("Borrar", resultado);
+            //3. RequestDispacher
+            RequestDispatcher rd = request.getRequestDispatcher("Borrar.jsp");
+            rd.forward(request, response);
+        } catch (URISyntaxException ex) {
+            Logger.getLogger(BorrarElemento.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
     }
 

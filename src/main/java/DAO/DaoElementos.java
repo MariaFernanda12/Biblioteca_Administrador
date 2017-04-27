@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import Modelo.Elemento;
 import Util.Conexion;
+import java.net.URISyntaxException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -15,9 +16,9 @@ public class DaoElementos {
 
     private Connection conexion;
 
-    public DaoElementos() {
-        Conexion db = Conexion.getConexion();
-        this.conexion = db.getConnection();
+    public DaoElementos() throws URISyntaxException {
+       this.conexion  = Conexion.getConnection();
+         
     }
 
     public boolean insertar(Elemento elm) {

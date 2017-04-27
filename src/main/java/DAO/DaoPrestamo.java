@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import Modelo.Prestamo;
 import Util.Conexion;
+import java.net.URISyntaxException;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -15,10 +16,11 @@ public class DaoPrestamo {
     
     private Connection conexion;
     
-    public DaoPrestamo() {
-        Conexion db = Conexion.getConexion();
-        this.conexion = db.getConnection();
+    public DaoPrestamo() throws URISyntaxException {
+        this.conexion = Conexion.getConnection();
+         
     }
+    
     
     public boolean restarInventario(int etiqueta) {
         boolean resultado = false;
